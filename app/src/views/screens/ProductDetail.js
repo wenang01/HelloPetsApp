@@ -17,7 +17,9 @@ const ProductDetail = ({ navigation, route }) => {
                 <Icon name="shopping-cart" size={28} />
             </View>
             <View style={style.imageContainer}>
-                <Image source={plant.img} style={{ resizeMode: 'contain', flex: 1 }} />
+                <Image
+                    source={{ uri: `http://192.168.0.14:3030/products/photo/${plant.productImage}` }}
+                    style={{ resizeMode: 'contain', flex: 1, width: 600, height: 600 }} />
             </View>
             <View style={style.detailsContainer}>
                 <View
@@ -37,7 +39,7 @@ const ProductDetail = ({ navigation, route }) => {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                     }}>
-                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{plant.name}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{plant.productName}</Text>
                     <View style={style.priceTag}>
                         <Text
                             style={{
@@ -50,8 +52,8 @@ const ProductDetail = ({ navigation, route }) => {
                         </Text>
                     </View>
                 </View>
-                <View style={{ paddingHorizontal: 20, marginTop: 10 }}>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>About</Text>
+                <View style={{ paddingHorizontal: 20, marginTop: 2 }}>
+                    <Text style={{ fontSize: 16 }}>{plant.description}</Text>
                     <Text
                         style={{
                             color: 'grey',
@@ -141,8 +143,8 @@ const style = StyleSheet.create({
     },
     borderBtnText: { fontWeight: 'bold', fontSize: 28 },
     buyBtn: {
-        width: 130,
-        height: 50,
+        width: 100,
+        height: 40,
         backgroundColor: COLORS.green,
         justifyContent: 'center',
         alignItems: 'center',

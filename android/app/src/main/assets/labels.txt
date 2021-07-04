@@ -1,0 +1,5 @@
+0 Kucing Anggora
+1 Kucing Scabies
+2 Anak Kucing
+3 Kucing
+4 Kucing Sakit Mata

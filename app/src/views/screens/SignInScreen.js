@@ -10,6 +10,7 @@ import APIKit, { setClientToken } from '../../router/APIKit';
 import Spinner from 'react-native-loading-spinner-overlay';
 import HomeScreen from './HomeScreen';
 import OnBoardScreen from './OnBoardScreen';
+import globaldata, { currentUser } from '../../../../globaldata';
 
 const initialState = {
   email: '',
@@ -18,11 +19,10 @@ const initialState = {
   isAuthorized: false,
   isLoading: false,
   userData: undefined,
+  user: undefined,
 };
 class SignInScreen extends Component {
   state = initialState;
-
-  componentWillUnmount() { }
 
   onEmailChange = (email) => {
     this.setState({ email });
@@ -41,7 +41,9 @@ class SignInScreen extends Component {
       // Set JSON Web Token on success
       setClientToken(data.accessToken);
       this.setState({ isLoading: false, isAuthorized: true, userData: data });
-      this.props.navigation.navigate('Consultation')
+      console.log("================data==============")
+      console.log(data)
+      this.getUser()
     };
 
     const onFailure = (error) => {
@@ -53,10 +55,36 @@ class SignInScreen extends Component {
     };
 
     // Show spinner when call is made
-    this.setState({ isLoading: true });
+    // this.setState({ isLoading: true });
 
     APIKit.post('/api/auth/signin/', payload).then(onSuccess).catch(onFailure);
   }
+
+  getUser() {
+    const { userData } = this.state
+    const onSuccess = ({ data }) => {
+      this.setState({ isLoading: false, isAuthorized: true, user: data });
+      console.log("============user=============")
+      globaldata.currentUser = data
+      console.log(data)
+      console.log("============user=============")
+      this.props.navigation.navigate('Home', data)
+    };
+
+    const onFailure = (error) => {
+      console.log(error && error.response);
+      this.setState({
+        errors: 'no data was found',
+        isLoading: false
+      });
+    };
+    this.setState({ isLoading: true });
+    APIKit.get(`/users/${userData.id}`).then(onSuccess).catch(onFailure)
+  }
+
+  // componentDidMount() {
+  //   this.getUser()
+  // }
 
   getNonFieldErrorMessage() {
     // Return errors that are served in `non_field_errors`
@@ -95,7 +123,7 @@ class SignInScreen extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, userData } = this.state;
     return (
       <SafeAreaView
         style={{ paddingHorizontal: 20, flex: 1, backgroundColor: COLORS.white }}>
@@ -191,7 +219,7 @@ class SignInScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View
+              {/* <View
                 style={{
                   marginVertical: 10,
                   flexDirection: 'row',
@@ -203,8 +231,8 @@ class SignInScreen extends Component {
                   OR
                 </Text>
                 <View style={STYLES.line}></View>
-              </View>
-              <View
+              </View> */}
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -228,7 +256,7 @@ class SignInScreen extends Component {
                     source={require('../../assests/google.png')}
                   />
                 </View>
-              </View>
+              </View> */}
             </View>
 
             <View
@@ -252,9 +280,9 @@ class SignInScreen extends Component {
           </ScrollView>
         ) : (
           <View>
-            {/* <OnBoardScreen /> */}
-            < HomeScreen />
+            <Text>Login Successfully</Text>
           </View>
+          // this.props.navigation.navigate('Home', userData)
         )}
       </SafeAreaView>
     );

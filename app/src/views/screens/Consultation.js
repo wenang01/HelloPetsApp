@@ -5,48 +5,53 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
 import biodata from '../../consts/biodata';
 import APIKit, { setClientToken } from '../../router/APIKit';
+import globaldata from '../../../../globaldata';
 
 import { CometChat } from '@cometchat-pro/react-native-chat';
-import { CometChatUI } from '../../cometchat-pro-react-native-ui-kit/src';
+import { CometChatUI, CometChatMessages } from '../../cometchat-pro-react-native-ui-kit/src';
 import { COMETCHAT_CONSTANTS } from '../../consts/CONSTS';
+import CometChatManager from '../../cometchat-pro-react-native-ui-kit/src/utils/controller';
 
-export class Consultation extends Component {
+const Consultation = ({ navigation, route }) => {
+    // const data = route.params;
+    // console.log("<<<<<<<<<<<<<<<<data>>>>>>>>>>>>>>>")
+    // console.log(data)
 
-    componentDidMount() {
-        var appID = COMETCHAT_CONSTANTS.APP_ID;
-        var region = COMETCHAT_CONSTANTS.REGION;
-        var appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
-        CometChat.init(appID, appSetting).then(
-            () => {
-                console.log("Initialization completed successfully");
-                // You can now call login function.
-                var UID = "SUPERHERO1";
-                var authKey = COMETCHAT_CONSTANTS.AUTH_KEY;
+    const currentUser = globaldata.currentUser
+    console.log("<<<<<<<<<<<<<<<<user for chat>>>>>>>>>>>>>>>")
+    console.log(currentUser)
 
-                CometChat.login(UID, authKey).then(
-                    user => {
-                        console.log("Login Successful:", { user });
-                    },
-                    error => {
-                        console.log("Login failed with exception:", { error });
-                    }
-                );
-            },
-            error => {
-                console.log("Initialization failed with error:", error);
-                // Check the reason for error and take appropriate action.
-            }
-        );
 
-    }
-    chat = []
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                < CometChatUI />
-            </View>
-        )
-    }
+    var appID = COMETCHAT_CONSTANTS.APP_ID;
+    var region = COMETCHAT_CONSTANTS.REGION;
+    var appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
+    CometChat.init(appID, appSetting).then(
+        () => {
+            console.log("Initialization completed successfully");
+            // You can now call login function.
+            var UID = currentUser.username;
+            var authKey = COMETCHAT_CONSTANTS.AUTH_KEY;
+
+            CometChat.login(UID, authKey).then(
+                user => {
+                    console.log("Login Successful:", { user });
+                },
+                error => {
+                    console.log("Login failed with exception:", { error });
+                }
+            );
+        },
+        error => {
+            console.log("Initialization failed with error:", error);
+            // Check the reason for error and take appropriate action.
+        }
+    );
+
+    return (
+        <View style={{ flex: 1 }}>
+            < CometChatUI />
+        </View>
+    )
 }
 
 export default Consultation
@@ -88,3 +93,71 @@ const style = StyleSheet.create({
 
     },
 });
+
+// export class Consultation extends Component {
+//     item = this.props.item
+//     constructor(props) {
+//         super(props)
+//         this.state = {
+
+//         }
+//     }
+
+//     getUser() {
+//         APIKit.get().then(
+//             response => {
+//                 console.log(response)
+//             }
+//         ).catch(
+//             error => {
+//                 console.log(error.response);
+//             }
+
+//         )
+//     }
+
+//     getDokter() {
+
+//     }
+
+//     componentDidMount() {
+//         console.log("<<<<<<<<item>>>>>>>>>>>");
+//         // console.log(this.state.item);
+//         console.log(this.item)
+//         this.getUser()
+//         var appID = COMETCHAT_CONSTANTS.APP_ID;
+//         var region = COMETCHAT_CONSTANTS.REGION;
+//         var appSetting = new CometChat.AppSettingsBuilder().subscribePresenceForAllUsers().setRegion(region).build();
+//         CometChat.init(appID, appSetting).then(
+//             () => {
+//                 console.log("Initialization completed successfully");
+//                 // You can now call login function.
+//                 var UID = "SUPERHERO1";
+//                 var authKey = COMETCHAT_CONSTANTS.AUTH_KEY;
+
+//                 CometChat.login(UID, authKey).then(
+//                     user => {
+//                         console.log("Login Successful:", { user });
+//                     },
+//                     error => {
+//                         console.log("Login failed with exception:", { error });
+//                     }
+//                 );
+//             },
+//             error => {
+//                 console.log("Initialization failed with error:", error);
+//                 // Check the reason for error and take appropriate action.
+//             }
+//         );
+
+//     }
+//     render() {
+//         return (
+//             <View style={{ flex: 1 }}>
+//                 < CometChatUI />
+//             </View>
+//         )
+//     }
+// }
+
+// export default Consultation

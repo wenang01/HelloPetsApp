@@ -28,6 +28,7 @@ import {
 } from '../cometchat-pro-react-native-ui-kit';
 import Product from '../views/screens/Product';
 import ProductDetail from '../views/screens/ProductDetail';
+import CartScreen from '../views/screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +37,7 @@ const Router = () => {
     <>
       <StatusBar backgroundColor={COLORS.white} barStyle="dark-content" />
       <Stack.Navigator
-        initialRouteName="Diagnose"
+        initialRouteName="SignIn"
         screenOptions={{ headerShown: false }}>
         <Stack.Screen name="BoardScreen" component={OnBoardScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
@@ -51,6 +52,8 @@ const Router = () => {
 
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+
         {/* Comet Chat Components */}
         {/* <Stack.Screen name="LoginPage" component={LoginPage} />
         <Stack.Screen name="HomePage" component={HomePage} /> */}

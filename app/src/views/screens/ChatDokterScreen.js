@@ -1,21 +1,58 @@
 import React, { Component } from 'react'
 import { SafeAreaView, StyleSheet, View, Text, Image } from 'react-native';
-import { FlatList, TextInput, TouchableHighlight } from 'react-native-gesture-handler';
+import { FlatList, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
 import biodata from '../../consts/biodata';
 import APIKit, { setClientToken } from '../../router/APIKit';
+import DokterService from '../../middleware/dokter.service';
 
 export class ChatDokterScreen extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      listdokter: undefined,
+      isLoading: false,
+      isAuthorized: false,
+    }
+  }
+
+  getDokter() {
+    const onSuccess = ({ data }) => {
+      // Set JSON Web Token on success
+      setClientToken(data.accessToken);
+      this.setState({ isLoading: false, isAuthorized: true, listdokter: data });
+      // this.props.navigation.navigate('Consultation')
+      console.log(data)
+    };
+
+    const onFailure = (error) => {
+      console.log(error && error.response);
+      this.setState({
+        errors: 'error! email and pass not match',
+        isLoading: false,
+      });
+    };
+
+    this.setState({ isLoading: true });
+
+    APIKit.get('/doctors/').then(onSuccess).catch(onFailure)
+  }
+
+  componentDidMount() {
+    this.getDokter()
+  }
 
   CartCard = ({ item }) => {
     return (
       <TouchableHighlight
         underlayColor={COLORS.white}
         activeOpacity={0.9}
-        onPress={() => this.props.navigation.navigate('DetailBiodata', biodata)}>
+      // onPress={() => this.props.navigation.navigate('DetailBiodata', listdokter)}
+      >
         <View style={style.cartCard}>
-          <Image source={item.image} style={{ height: 90, width: 90 }} />
+          <Image source={item.user.foto} style={{ height: 90, width: 90 }} />
           <View
             style={{
               height: 100,
@@ -23,16 +60,16 @@ export class ChatDokterScreen extends Component {
               paddingVertical: 10,
               flex: 1,
             }}>
-            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.name}</Text>
+            <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.user.name}</Text>
             <Text style={{ fontSize: 13, color: COLORS.grey }}>
-              {item.ingredients}
+              {item.noStr}
             </Text>
             <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Rp.{item.price}</Text>
           </View>
           <View style={{ marginRight: 10, alignItems: 'center' }}>
-            <View style={style.actionBtn}>
+            <TouchableOpacity style={style.actionBtn} onPress={() => { this.props.navigation.navigate('Consultation', item) }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15, textAlign: 'center', color: '#FFFFFF' }}>Chat</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </TouchableHighlight>
@@ -40,6 +77,7 @@ export class ChatDokterScreen extends Component {
   };
 
   render() {
+    const { listdokter } = this.state
     return (
       <SafeAreaView style={{ backgroundColor: COLORS.white, flex: 1 }}>
         <View style={style.header}>
@@ -53,7 +91,7 @@ export class ChatDokterScreen extends Component {
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 80 }}
-          data={biodata}
+          data={listdokter}
           renderItem={({ item }) => <this.CartCard item={item} />}
           ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
           ListFooterComponent={() => (

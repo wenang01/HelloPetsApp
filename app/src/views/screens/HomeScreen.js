@@ -18,70 +18,33 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
 // import categories from '../../consts/categories';
 import fiture from '../../consts/fiture';
+import globaldata from '../../../../globaldata';
 const { width } = Dimensions.get('screen');
 const cardWidth = width / 2 - 20;
 
-const HomeScreen = ({ navigation }) => {
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
+const HomeScreen = ({ navigation, route }) => {
 
-  // const ListCategories = () => {
-  //   return (
-  //     <ScrollView
-  //       horizontal
-  //       showsHorizontalScrollIndicator={false}
-  //       contentContainerStyle={style.categoriesListContainer}>
-  //       {categories.map((category, index) => (
-  //         <TouchableOpacity
-  //           key={index}
-  //           activeOpacity={0.8}
-  //           onPress={() => setSelectedCategoryIndex(index)}>
-  //           <View
-  //             style={{
-  //               backgroundColor:
-  //                 selectedCategoryIndex == index
-  //                   ? COLORS.primary
-  //                   : COLORS.secondary,
-  //               ...style.categoryBtn,
-  //             }}>
-  //             <View style={style.categoryBtnImgCon}>
-  //               <Image
-  //                 source={category.image}
-  //                 style={{height: 35, width: 35, resizeMode: 'cover'}}
-  //               />
-  //             </View>
-  //             <Text
-  //               style={{
-  //                 fontSize: 15,
-  //                 fontWeight: 'bold',
-  //                 marginLeft: 10,
-  //                 color:
-  //                   selectedCategoryIndex == index
-  //                     ? COLORS.white
-  //                     : COLORS.primary,
-  //               }}>
-  //               {category.name}
-  //             </Text>
-  //           </View>
-  //         </TouchableOpacity>
-  //       ))}
-  //     </ScrollView>
-  //   );
-  // };
+  const user = globaldata.currentUser
+  console.log("===============>>>>home user<<<============")
+  console.log(user)
+  console.log("===============>>>>home user<<<============")
+
   const Card = ({ fiture }) => {
     return (
       <TouchableHighlight
         underlayColor={COLORS.white}
         activeOpacity={0.9}
-        onPress={() => navigation.navigate('DetailScreen', fiture)}>
+        onPress={() => navigation.navigate(fiture.nav, fiture)}
+      >
         <View style={style.card}>
           <View style={{ alignItems: 'center', top: -40 }}>
             <Image source={fiture.image} style={{ height: 120, width: 120 }} />
           </View>
-          <View style={{ marginHorizontal: 20 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+          <View style={{ marginHorizontal: 5 }}>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
               {fiture.name}
             </Text>
-            <Text style={{ fontSize: 14, color: COLORS.grey, marginTop: 2 }}>
+            <Text style={{ fontSize: 12, color: COLORS.grey, marginTop: 2, alignContent: 'center' }}>
               {fiture.ingredients}
             </Text>
           </View>
@@ -96,30 +59,31 @@ const HomeScreen = ({ navigation }) => {
       </TouchableHighlight>
     );
   };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={style.header}>
         <View>
           <View style={{ flexDirection: 'row' }}>
-            <Text style={{ fontSize: 28 }}>Halo,</Text>
-            <Text style={{ fontSize: 28, fontWeight: 'bold', marginLeft: 10 }}>
-              Holly Immanuel
+            <Text style={{ fontSize: 20 }}>Halo,</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10 }}>
+              {user.name}
             </Text>
           </View>
-          <Text style={{ marginTop: 5, fontSize: 22, color: COLORS.grey }}>
+          <Text style={{ marginTop: 2, fontSize: 18, color: COLORS.grey }}>
             What do you want today
           </Text>
         </View>
         <Image
-          source={require('../../assests/person.png')}
+          source={require('../../assests/user.png')}
           style={{ height: 50, width: 50, borderRadius: 25 }}
         />
       </View>
-      <View
+      {/* <View
         style={{
-          marginTop: 40,
+          marginTop: 5,
           flexDirection: 'row',
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
         }}>
         <View style={style.inputContainer}>
           <Icon name="search" size={28} />
@@ -128,10 +92,10 @@ const HomeScreen = ({ navigation }) => {
             placeholder="Search for Animals"
           />
         </View>
-      </View>
+      </View> */}
       <FlatList
         style={{
-          marginTop: 30,
+          marginTop: 20,
         }}
         showsVerticalScrollIndicator={false}
         numColumns={2}
@@ -144,7 +108,7 @@ const HomeScreen = ({ navigation }) => {
 
 const style = StyleSheet.create({
   header: {
-    marginTop: 20,
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,

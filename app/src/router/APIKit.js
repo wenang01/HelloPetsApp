@@ -4,6 +4,7 @@ import axios from 'axios';
 // Create axios client, pre-configured with baseURL
 let APIKit = axios.create({
   baseURL: 'http://192.168.0.14:3030',
+  // baseURL: 'https://hellopets-service.herokuapp.com/',
   timeout: 10000,
 });
 

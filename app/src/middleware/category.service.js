@@ -9,7 +9,7 @@ class CategoryService {
     getAllProductByCategory(id) {
         return http.get(`/categories/${id}`);
     }
- 
+
 }
 
 export default new CategoryService();

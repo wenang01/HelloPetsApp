@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
-import {View} from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
-import CartScreen from '../screens/CartScreen';
 import ChatDokterScreen from '../screens/ChatDokterScreen';
+import Profile from '../screens/Profile';
+import ProductScreen from '../screens/Product';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,33 +26,31 @@ const BottomNavigator = () => {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="home-filled" color={color} size={28} />
+          tabBarIcon: ({ color }) => (
+            <Icon name="home-filled" color={color} size={30} />
           ),
         }}
       />
       <Tab.Screen
         name="Product"
-        component={HomeScreen}
+        component={ProductScreen}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="grid-view" color={color} size={28} />
-          ),
+          tabBarIcon: ({ color }) => <Icon name="shopping-bag" color={color} size={30} />,
         }}
       />
       <Tab.Screen
         name="ChatDokterScreen"
         component={ChatDokterScreen}
         options={{
-          tabBarIcon: ({color}) => <Icon name="mail" color={color} size={28} />,
+          tabBarIcon: ({ color }) => <Icon name="mail" color={color} size={30} />,
         }}
       />
       <Tab.Screen
         name="Akun"
-        component={HomeScreen}
+        component={Profile}
         options={{
-          tabBarIcon: ({color}) => (
-            <Icon name="person" color={color} size={28} />
+          tabBarIcon: ({ color }) => (
+            <Icon name="person" color={color} size={30} />
           ),
         }}
       />

@@ -1,3 +1,5 @@
+import APIKit from '../router/APIKit';
+
 const biodata = [
   {
     id: '1',

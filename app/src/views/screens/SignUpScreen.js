@@ -152,7 +152,7 @@ class SignUpScreen extends Component {
             <View style={{ marginTop: 0 }}>
               <Text
                 style={{ fontSize: 27, fontWeight: 'bold', color: COLORS.dark }}>
-                Welcome Back,
+                Welcome,
               </Text>
               <Text
                 style={{ fontSize: 19, fontWeight: 'bold', color: COLORS.light }}>
@@ -263,7 +263,7 @@ class SignUpScreen extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View
+              {/* <View
                 style={{
                   marginVertical: 20,
                   flexDirection: 'row',
@@ -275,8 +275,8 @@ class SignUpScreen extends Component {
                   OR
                 </Text>
                 <View style={STYLES.line}></View>
-              </View>
-              <View
+              </View> */}
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   justifyContent: 'space-between',
@@ -300,7 +300,7 @@ class SignUpScreen extends Component {
                     source={require('../../assests/google.png')}
                   />
                 </View>
-              </View>
+              </View> */}
             </View>
 
             <View
@@ -322,8 +322,27 @@ class SignUpScreen extends Component {
             </View>
           </ScrollView>
         ) : (
-          <View>
-            <Text>Successfully authorized!</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginTop: 20,
+              marginBottom: 20,
+            }}>
+            <View>
+              <Text style={{ color: COLORS.light, fontWeight: 'bold' }}>
+                Congrats You Have Successfully Registered
+              </Text>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('SignIn')}>
+                <Text style={{ color: COLORS.pink, fontWeight: 'bold' }}>
+                  Sign In
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </SafeAreaView>
