@@ -101,7 +101,7 @@ class CometChatMessageHeader extends React.Component {
 
         if (
           messageTimestamp.getUTCFullYear() ==
-            currentTimestamp.getUTCFullYear() &&
+          currentTimestamp.getUTCFullYear() &&
           messageTimestamp.getUTCMonth() == currentTimestamp.getUTCMonth() &&
           messageTimestamp.getUTCDate() == currentTimestamp.getUTCDate()
         ) {
@@ -114,7 +114,7 @@ class CometChatMessageHeader extends React.Component {
           status = hours + ':' + minutes + ' ' + ampm.toUpperCase();
         } else if (
           messageTimestamp.getUTCFullYear() ==
-            currentTimestamp.getUTCFullYear() &&
+          currentTimestamp.getUTCFullYear() &&
           messageTimestamp.getUTCMonth() == currentTimestamp.getUTCMonth() &&
           messageTimestamp.getUTCDate() == currentTimestamp.getUTCDate() - 1
         ) {

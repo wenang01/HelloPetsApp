@@ -651,7 +651,7 @@ class CometChatMessages extends React.PureComponent {
           params.actionGenerated('messageDeleted', [deletedMessage]);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
   editMessage = (message) => {
@@ -741,7 +741,7 @@ class CometChatMessages extends React.PureComponent {
       this.state.messageList.length &&
       this.state.messageList.length &&
       newMessages[newMessages.length - 1].id ===
-        this.state.messageList[this.state.messageList.length - 1].id
+      this.state.messageList[this.state.messageList.length - 1].id
     ) {
       return;
     }

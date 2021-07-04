@@ -6,6 +6,7 @@ import COLORS from '../../consts/colors';
 import biodata from '../../consts/biodata';
 import APIKit, { setClientToken } from '../../router/APIKit';
 import DokterService from '../../middleware/dokter.service';
+import globaldata from '../../../../globaldata';
 
 export class ChatDokterScreen extends Component {
 
@@ -67,7 +68,12 @@ export class ChatDokterScreen extends Component {
             <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Rp.{item.price}</Text>
           </View>
           <View style={{ marginRight: 10, alignItems: 'center' }}>
-            <TouchableOpacity style={style.actionBtn} onPress={() => { this.props.navigation.navigate('Consultation', item) }}>
+            <TouchableOpacity style={style.actionBtn}
+              onPress={() => {
+                globaldata.selectedDoctor = item
+                this.props.navigation.navigate('Consultation', item)
+
+              }}>
               <Text style={{ fontWeight: 'bold', fontSize: 15, textAlign: 'center', color: '#FFFFFF' }}>Chat</Text>
             </TouchableOpacity>
           </View>

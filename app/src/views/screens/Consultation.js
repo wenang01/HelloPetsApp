@@ -40,6 +40,8 @@ const Consultation = ({ navigation, route }) => {
                     console.log("Login failed with exception:", { error });
                 }
             );
+            // CometChat.RECEIVER_TYPE.USER
+            // CometChat.
         },
         error => {
             console.log("Initialization failed with error:", error);
@@ -50,6 +52,7 @@ const Consultation = ({ navigation, route }) => {
     return (
         <View style={{ flex: 1 }}>
             < CometChatUI />
+            {/* <CometChatMessages /> */}
         </View>
     )
 }
