@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, SafeAreaView, Image, Text, StyleSheet } from 'react-native';
+import { View, SafeAreaView, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
+import APIKit from '../../router/APIKit';
+import globaldata from '../../../../globaldata';
 
 const ProductDetail = ({ navigation, route }) => {
     const plant = route.params;
+    const countCart = globaldata.countCart
 
     return (
         <SafeAreaView
@@ -14,7 +17,17 @@ const ProductDetail = ({ navigation, route }) => {
             }}>
             <View style={style.header}>
                 <Icon name="arrow-back" size={28} onPress={() => navigation.goBack()} />
-                <Icon name="shopping-cart" size={28} />
+                {/* <Icon name="shopping-cart" size={28} onPress={() => navigation.navigate('Cart')} /> */}
+                <TouchableOpacity onPress={() => { navigation.navigate('Cart') }}>
+                    <View>
+                        <Text>
+                            <Icon name="shopping-cart" size={28} ></Icon>
+                            <View style={{ backgroundColor: 'red', width: 15, height: 15, borderRadius: 10 }}>
+                                <Text style={{ alignSelf: 'center', color: COLORS.white, fontSize: 10 }}>{countCart}</Text>
+                            </View>
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
             <View style={style.imageContainer}>
                 <Image

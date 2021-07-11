@@ -7,10 +7,11 @@ import biodata from '../../consts/biodata';
 import globaldata from '../../../../globaldata';
 
 const Profile = ({ navigation }) => {
+  console.log(globaldata)
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
       <View style={{ flexDirection: 'column', height: 320, backgroundColor: COLORS.primary, }}>
-        <Text style={{ marginHorizontal: 30, marginTop: 20, fontSize: 25, fontWeight: 'bold', color: COLORS.white }}>
+        <Text style={{ marginHorizontal: 30, marginTop: 5, fontSize: 25, fontWeight: 'bold', color: COLORS.white }}>
           Profile
         </Text>
         <View style={{ flex: 1.5, justifyContent: 'center', alignItems: 'center', }}>
@@ -26,11 +27,11 @@ const Profile = ({ navigation }) => {
             style={{ color: COLORS.primary }} />
           <Text style={{ marginHorizontal: 2, fontSize: 17, alignItems: 'center', color: '#0C1229' }}>{globaldata.currentUser.name}</Text>
         </View>
-        {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, paddingTop: 20, }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, paddingTop: 20, }}>
           <Icon name="phone" size={30}
             style={{ color: COLORS.primary }} />
-          <Text style={{ marginHorizontal: 5, fontSize: 17, alignItems: 'center', color: '#0C1229' }}> 0896789534277</Text>
-        </View> */}
+          <Text style={{ marginHorizontal: 2, fontSize: 17, alignItems: 'center', color: '#0C1229' }}>{globaldata.currentUser.phoneNumber}</Text>
+        </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, paddingTop: 20, }}>
           <Icon name="mail" size={30}
             style={{ color: COLORS.primary }} />

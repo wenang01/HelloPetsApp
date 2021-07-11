@@ -7,6 +7,7 @@ import biodata from '../../consts/biodata';
 import APIKit, { setClientToken } from '../../router/APIKit';
 import DokterService from '../../middleware/dokter.service';
 import globaldata from '../../../../globaldata';
+import person from '../../assests/user.png'
 
 export class ChatDokterScreen extends Component {
 
@@ -53,7 +54,7 @@ export class ChatDokterScreen extends Component {
       // onPress={() => this.props.navigation.navigate('DetailBiodata', listdokter)}
       >
         <View style={style.cartCard}>
-          <Image source={item.user.foto} style={{ height: 90, width: 90 }} />
+          <Image source={require('../../assests/user.png')} style={{ height: 90, width: 90, resizeMode: 'contain' }} />
           <View
             style={{
               height: 100,
@@ -65,7 +66,7 @@ export class ChatDokterScreen extends Component {
             <Text style={{ fontSize: 13, color: COLORS.grey }}>
               {item.noStr}
             </Text>
-            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Rp.{item.price}</Text>
+            {/* <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Rp.{item.price}</Text> */}
           </View>
           <View style={{ marginRight: 10, alignItems: 'center' }}>
             <TouchableOpacity style={style.actionBtn}

@@ -68,6 +68,7 @@ class SignUpScreen extends Component {
     this.setState({ isLoading: true });
 
     APIKit.post('/api/auth/signup/', payload).then(onSuccess).catch(onFailure);
+
     // cometchat register
     var appID = COMETCHAT_CONSTANTS.APP_ID;
     var region = COMETCHAT_CONSTANTS.REGION;

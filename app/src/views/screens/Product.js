@@ -15,6 +15,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from '../../consts/colors';
 import plants from '../../consts/plants';
 import APIKit, { setClientToken } from '../../router/APIKit';
+import globaldata from '../../../../globaldata';
+import axios from 'axios';
 
 const width = Dimensions.get('window').width / 2 - 30;
 
@@ -26,6 +28,7 @@ export class Product extends React.Component {
             listcategories: undefined,
             isLoading: false,
             isAuthorized: false,
+            countCart: 0,
         };
     };
 
@@ -76,6 +79,80 @@ export class Product extends React.Component {
     componentDidMount() {
         this.getProduct()
         this.getCategories()
+        this.getCountCart()
+    }
+
+    getCountCart() {
+        const userId = globaldata.currentUser.id;
+
+        const onSuccess = (data) => {
+            this.setState({ countCart: data })
+            globaldata.countCart = data.data
+            console.log('<<<<<<<<<<<<<<<<count carts data>>>>>>>>>>>>>')
+            console.log(data)
+            console.log('<<<<<<<<<<<<<<<<count carts data>>>>>>>>>>>>>')
+        }
+        const onFaill = (error) => {
+            console.log(error)
+        }
+
+        APIKit.get(`/carts/countCart/${userId}`).then(onSuccess).catch(onFaill)
+    }
+
+    addToCart(prodId) {
+
+        const users = globaldata.currentUser.id;
+        const products = prodId;
+        const qty = 1;
+        const payload = { users, products, qty };
+        console.log(payload);
+
+        // const onSuccess = ({ data }) => {
+        //     // setClientToken(data.accessToken);
+        //     console.log(data)
+
+        // };
+
+        // const onFailure = (error) => {
+        //     console.log(error && error.response);
+
+        // };
+
+        // APIKit.post('/carts/', payload).then(onSuccess).catch(onFailure);
+
+        const form_data = new FormData();
+        form_data.append("users", users);
+        form_data.append("products", products);
+        form_data.append("qty", qty);
+        const END_POINT = "carts/";
+        axios
+            .post(
+                "http://192.168.0.14:3030/" + END_POINT,
+                form_data,
+                // { headers: authHeader() },
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            )
+            .then(
+                (response) => {
+                    //   alert("Add Carts Successfully!");
+                    //   window.location.replace("/carts/");
+                    // window.location.reload();
+                    console.log(response.data);
+                    //   this.setState({
+                    //         currentUser: response.data.users.id,
+                    //         currentProduct: { id: response.data.products.id },
+                    //         qty: response.data.qty,
+                    //     })
+                },
+                (error) => {
+                    console.log(error);
+                    // alert("sorry, something's wrong..");
+                }
+            );
     }
 
     CategoryList = () => {
@@ -111,88 +188,88 @@ export class Product extends React.Component {
         return (
             <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => this.props.navigation.navigate('ProductDetail', plant)}
-            >
+                onPress={() => this.props.navigation.navigate('ProductDetail', plant)}>
                 <View style={style.card}>
-                    <View style={{ alignItems: 'flex-end' }}>
-                        <View
-                            style={{
-                                width: 30,
-                                height: 30,
-                                borderRadius: 20,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: plant.like
-                                    ? 'rgba(245, 42, 42,0.2)'
-                                    : 'rgba(0,0,0,0.2) ',
-                            }}>
-                            <Icon
-                                name="favorite"
-                                size={16}
-                                color={plant.like ? COLORS.red : COLORS.black}
-                            />
-                        </View>
-                    </View>
-
                     <View
                         style={{
-                            height: 100,
+                            height: 130,
                             alignItems: 'center',
                         }}>
                         <Image
                             // https://raw.githubusercontent.com/wenang01/HelloPetService/main/src/main/java/product-photos/
                             // source={"http://localhost:3030/products/photo/" + plant.productImage}
                             source={{ uri: `http://192.168.0.14:3030/products/photo/${plant.productImage}` }}
-                            style={{ flex: 1, resizeMode: 'contain', width: 350, height: 400 }}
+                            style={{ flex: 1, resizeMode: 'contain', width: 400, height: 600 }}
                         />
                         {console.log(plant.productImage)}
                     </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 17, marginTop: 10 }}>
-                        {plant.productName}
-                    </Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginTop: 5,
-                        }}>
-                        <Text style={{ fontSize: 15 }}>
-                            Rp.{plant.price}
+                    <View>
+                        <Text style={{ fontWeight: 'bold', fontSize: 12, marginTop: 10 }}>
+                            {plant.productName}
+                        </Text>
+                        <Text style={{ fontSize: 10 }}>
+                            Stok : {plant.stok}
                         </Text>
                         <View
                             style={{
-                                height: 25,
-                                width: 25,
-                                backgroundColor: COLORS.green,
-                                borderRadius: 5,
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginTop: 5,
                             }}>
-                            <Text style={{ fontSize: 20, color: COLORS.white, fontWeight: 'bold', textAlign: 'center' }}>+</Text>
+                            <Text style={{ fontSize: 12 }}>
+                                Rp.{plant.price}
+                            </Text>
+                            <TouchableOpacity
+                                style={{
+                                    height: 30,
+                                    width: 40,
+                                    backgroundColor: COLORS.green,
+                                    borderRadius: 5,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                                onPress={() => {
+                                    console.log(plant.id)
+                                    this.addToCart(plant.id)
+                                }}>
+                                <Text style={{ fontSize: 10, color: COLORS.white, textAlign: 'center' }}>Add to Cart</Text>
+                            </TouchableOpacity>
+
                         </View>
                     </View>
+
                 </View>
             </TouchableOpacity>
         );
     };
     render() {
-        const { listproduct } = this.state
+        const { listproduct, countCart } = this.state
+        console.log("count cart ==========================")
+        console.log(countCart)
         return (
             <SafeAreaView
                 style={{ flex: 1, paddingHorizontal: 20, backgroundColor: COLORS.white }}>
                 <View style={style.header}>
                     <View>
-                        <Text style={{ fontSize: 25 }}>Hello Pet</Text>
-                        <Text style={{ fontSize: 38, color: COLORS.green, fontWeight: 'bold' }}>
-                            Pet Store
+                        {/* <Text style={{ fontSize: 25 }}>Hello Pet</Text> */}
+                        <Text>
+                            <Text style={{ fontSize: 30 }}>Pet</Text>
+                            <Text style={{ fontSize: 30, color: COLORS.green, fontWeight: 'bold' }}>Store</Text>
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={() => { navigation.navigate('Cart') }}>
-                        <Icon name="shopping-cart" size={28} />
+                    <TouchableOpacity onPress={() => { this.props.navigation.navigate('Cart') }}>
+                        <View>
+                            <Text>
+                                <Icon name="shopping-cart" size={28} ></Icon>
+                                <View style={{ backgroundColor: 'red', width: 15, height: 15, borderRadius: 10 }}>
+                                    <Text style={{ alignSelf: 'center', color: COLORS.white, fontSize: 10 }}>{countCart.data}</Text>
+                                </View>
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 </View>
-                <View style={{ marginTop: 30, flexDirection: 'row' }}>
+                <View style={{ marginTop: 20, flexDirection: 'row' }}>
                     <View style={style.searchContainer}>
                         <Icon name="search" size={25} style={{ marginLeft: 20 }} />
                         <TextInput placeholder="Search" style={style.input} />
@@ -225,7 +302,7 @@ export default Product;
 const style = StyleSheet.create({
     categoryContainer: {
         flexDirection: 'row',
-        marginTop: 30,
+        marginTop: 20,
         marginBottom: 20,
         justifyContent: 'space-between',
     },
@@ -237,21 +314,21 @@ const style = StyleSheet.create({
         borderColor: COLORS.green,
     },
     card: {
-        height: 225,
+        height: 250,
         backgroundColor: COLORS.light,
-        width,
+        width: width,
         marginHorizontal: 2,
         borderRadius: 10,
         marginBottom: 20,
         padding: 10,
     },
     header: {
-        marginTop: 30,
+        marginTop: 20,
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     searchContainer: {
-        height: 50,
+        height: 40,
         backgroundColor: COLORS.light,
         borderRadius: 10,
         flex: 1,
@@ -259,15 +336,14 @@ const style = StyleSheet.create({
         alignItems: 'center',
     },
     input: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
         flex: 1,
         color: COLORS.dark,
     },
     sortBtn: {
         marginLeft: 10,
-        height: 50,
-        width: 50,
+        height: 40,
+        width: 40,
         borderRadius: 10,
         backgroundColor: COLORS.green,
         justifyContent: 'center',

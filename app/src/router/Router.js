@@ -29,6 +29,8 @@ import {
 import Product from '../views/screens/Product';
 import ProductDetail from '../views/screens/ProductDetail';
 import CartScreen from '../views/screens/CartScreen';
+import Transaksi from '../views/screens/Transaksi';
+import TransactionSuccess from '../views/screens/TransactionSuccess';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +55,8 @@ const Router = () => {
         <Stack.Screen name="Product" component={Product} />
         <Stack.Screen name="ProductDetail" component={ProductDetail} />
         <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Transaksi" component={Transaksi} />
+        <Stack.Screen name="TransactionSuccess" component={TransactionSuccess} />
 
         {/* Comet Chat Components */}
         {/* <Stack.Screen name="LoginPage" component={LoginPage} />
